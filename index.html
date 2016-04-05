@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <script src="scripts/vue.js"></script>
-    <script src="scripts/stopwatch.js"></script>
+
     <meta charset="UTF-8">
     <title>Stopwatch</title>
 
 </head>
 <body>
 <div id="stopwatch">
+    <div id="time">{{ time }}</div>
     <button v-on:click="startTime">Start</button>
     <button v-on:click="stopTime">Stop</button>
     <button v-on:click="resetTime">Reset</button>
-    <div id="time">{{ time }}</div>
-
 </div>
+<script src="scripts/stopwatch.js"></script>
 </body>
 </html>
