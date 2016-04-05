@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="scripts/vue.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
     <link href="style/style.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Stopwatch</title>
@@ -10,11 +11,8 @@
 <body>
 <div id="stopwatch">
     <div id="time">{{ time }}</div>
-    <button v-on:click="startTime">{{ firstButton }}</button>
-    <button v-on:click="stopTime">Stop</button>
-    <button v-on:click="resetTime">Reset</button>
-    <button v-on:click="addLapTime">Lap</button>
-    <button v-on:click="clearLaps">clear</button>
+    <a v-on:click="leftButtonAction" class="action-button shadow animate" v-bind:class="[leftButCls]">{{ leftButton }}</a>
+    <a v-on:click="rightButtonAction" class="action-button shadow animate" v-bind:class="[rightButCls]">{{ rightButton }}</a>
 
     <ol type = "1">
         <li v-for="lap in laps">

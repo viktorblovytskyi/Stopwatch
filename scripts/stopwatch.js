@@ -6,16 +6,20 @@ var stopwatch = new Vue({
     el: '#stopwatch',
 
     data: {
-        time: '00:00:00.0',
-        timeBegan: null,
-        timeStopped: null,
-        started: null,
-        paused: 0,
-        laps: [],
-        lastLap: 0,
-        elapsedTime: 0,
-        firstButton: 'Start',
-        secondButton: 'Reset'
+        time:           '00:00:00.0',
+        timeBegan:      null,
+        timeStopped:    null,
+        started:        null,
+        pausedTime:     0,
+        laps:           [],
+        lastLap:        0,
+        elapsedTime:    0,
+        leftButton:     'Start',
+        rightButton:    'Reset',
+        leftButFlag:    false,
+        rightButFlag:   false,
+        leftButCls:     'green',
+        rightButCls:    'yellow'
     },
 
     methods: {
@@ -27,10 +31,9 @@ var stopwatch = new Vue({
             if (this.timeBegan === null) {
                 this.timeBegan = new Date();
             } else if (this.timeBegan !== null) {
-                this.paused += ( new Date() - this.timeStopped);
+                this.pausedTime += ( new Date() - this.timeStopped);
             }
             this.started = setInterval(this.displayTime, 10);
-            
         },
 
         /***
@@ -48,9 +51,10 @@ var stopwatch = new Vue({
             clearInterval(this.started);
             this.timeBegan = null;
             this.timeStopped = null;
-            this.paused = 0;
+            this.pausedTime = 0;
             this.time = "00:00:00.0";
-            this.clearLaps();
+            this.laps = [];
+            this.lastLap = 0;
         },
 
         /***
@@ -60,7 +64,7 @@ var stopwatch = new Vue({
         displayTime: function () {
             var currentTime = new Date();
 
-            this.elapsedTime = new Date(currentTime - this.timeBegan - this.paused);
+            this.elapsedTime = new Date(currentTime - this.timeBegan - this.pausedTime);
             this.time = this.generateStrTime(this.elapsedTime.getUTCHours(),
                                              this.elapsedTime.getUTCMinutes(),
                                              this.elapsedTime.getUTCSeconds(),
@@ -93,6 +97,7 @@ var stopwatch = new Vue({
                                                             this.elapsedTime.getUTCMilliseconds())});
             } else {
                 var lapTime = new Date(this.elapsedTime - this.lastLap);
+                
                 this.laps.push({ time: this.generateStrTime( lapTime.getUTCHours(),
                                                              lapTime.getUTCMinutes(),
                                                              lapTime.getUTCSeconds(),
@@ -100,13 +105,44 @@ var stopwatch = new Vue({
             }
             this.lastLap = this.elapsedTime;
         },
-        
+
         /***
-         * This function deletes all data from array of laps.
+         * This function changes left button's properties.
          */
-        clearLaps: function () {
-            this.laps = [];
-            this.lastLap = 0;
+        leftButtonAction: function () {
+            if (!this.leftButFlag) {
+                this.leftButFlag = true;
+                this.leftButton = "Stop";
+                this.leftButCls = 'red';
+
+                this.rightButFlag = true;
+                this.rightButCls = 'blue';
+                this.rightButton = "Add lap";
+
+                this.startTime();
+            } else {
+                this.leftButFlag= false;
+                this.leftButton = "Start";
+                this.leftButCls = 'green';
+
+                this.rightButFlag = false;
+                this.rightButCls = 'yellow';
+                this.rightButton = "Reset";
+
+                this.stopTime();
+            }
+        },
+
+        /***
+         * This function changes right button's properties.
+         */
+        rightButtonAction: function () {
+            if (!this.rightButFlag) {
+                this.resetTime();
+            } else {
+                this.addLapTime();
+            }
         }
+
     }
 });
