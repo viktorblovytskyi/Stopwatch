@@ -9,7 +9,11 @@
 </head>
 <body>
 <div id="stopwatch">
-    {{ time }}
+    <button v-on:click="startTime">Start</button>
+    <button v-on:click="stopTime">Stop</button>
+    <button v-on:click="resetTime">Reset</button>
+    <div id="time">{{ time }}</div>
+
 </div>
 </body>
 </html>
