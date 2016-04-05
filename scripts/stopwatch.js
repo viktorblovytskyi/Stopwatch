@@ -10,12 +10,12 @@ var stopwatch = new Vue({
         timeBegan: null,
         timeStopped: null,
         started: null,
-        durationTime: 0,
+        paused: 0,
         laps: [],
         lastLap: 0,
         elapsedTime: 0,
-        first_button: 'Start',
-        second_button: 'Reset'
+        firstButton: 'Start',
+        secondButton: 'Reset'
     },
 
     methods: {
@@ -27,10 +27,10 @@ var stopwatch = new Vue({
             if (this.timeBegan === null) {
                 this.timeBegan = new Date();
             } else if (this.timeBegan !== null) {
-                this.durationTime += ( new Date() - this.timeStopped);
+                this.paused += ( new Date() - this.timeStopped);
             }
-
             this.started = setInterval(this.displayTime, 10);
+            
         },
 
         /***
@@ -48,7 +48,7 @@ var stopwatch = new Vue({
             clearInterval(this.started);
             this.timeBegan = null;
             this.timeStopped = null;
-            this.durationTime = 0;
+            this.paused = 0;
             this.time = "00:00:00.0";
             this.clearLaps();
         },
@@ -60,7 +60,7 @@ var stopwatch = new Vue({
         displayTime: function () {
             var currentTime = new Date();
 
-            this.elapsedTime = new Date(currentTime - this.timeBegan - this.timeStopped);
+            this.elapsedTime = new Date(currentTime - this.timeBegan - this.paused);
             this.time = this.generateStrTime(this.elapsedTime.getUTCHours(),
                                              this.elapsedTime.getUTCMinutes(),
                                              this.elapsedTime.getUTCSeconds(),
@@ -86,7 +86,6 @@ var stopwatch = new Vue({
          * This function adds lap in list.
          */
         addLapTime: function () {
-            console.log('last '+ this.lastLap + ' now '+ this.elapsedTime);
             if (this.lastLap === 0) {
                 this.laps.push({time: this.generateStrTime( this.elapsedTime.getUTCHours(),
                                                             this.elapsedTime.getUTCMinutes(),
@@ -101,12 +100,13 @@ var stopwatch = new Vue({
             }
             this.lastLap = this.elapsedTime;
         },
-
+        
         /***
          * This function deletes all data from array of laps.
          */
         clearLaps: function () {
             this.laps = [];
+            this.lastLap = 0;
         }
     }
 });

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <script src="scripts/vue.js"></script>
-
+    <link href="style/style.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Stopwatch</title>
 
@@ -10,16 +10,17 @@
 <body>
 <div id="stopwatch">
     <div id="time">{{ time }}</div>
-    <button v-on:click="startTime">Start</button>
+    <button v-on:click="startTime">{{ firstButton }}</button>
     <button v-on:click="stopTime">Stop</button>
     <button v-on:click="resetTime">Reset</button>
     <button v-on:click="addLapTime">Lap</button>
     <button v-on:click="clearLaps">clear</button>
-    <ui>
+
+    <ol type = "1">
         <li v-for="lap in laps">
             <span>{{ lap.time }}</span>
         </li>
-    </ui>
+    </ol>
 </div>
 <script src="scripts/stopwatch.js"></script>
 </body>
