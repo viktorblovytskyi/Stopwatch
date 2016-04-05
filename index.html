@@ -13,6 +13,13 @@
     <button v-on:click="startTime">Start</button>
     <button v-on:click="stopTime">Stop</button>
     <button v-on:click="resetTime">Reset</button>
+    <button v-on:click="addLapTime">Lap</button>
+    <button v-on:click="clearLaps">clear</button>
+    <ui>
+        <li v-for="lap in laps">
+            <span>{{ lap.time }}</span>
+        </li>
+    </ui>
 </div>
 <script src="scripts/stopwatch.js"></script>
 </body>
